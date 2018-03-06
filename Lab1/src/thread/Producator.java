@@ -1,34 +1,31 @@
 package thread;
-import java.util.concurrent.Semaphore;
+
+import java.util.Random;
 
 public class Producator extends Thread {
-	int n = 5;
-	int i;
-    public int[] list = new int[n];
-    boolean listFree = true;
-	Semaphore s = new Semaphore(1);
+	
+	public int randomElement;
+
+	@Override 
 	public void run() {
 		try {
 			while(true) {
-				for(i=0;i < list.length; i++) {
-					if( list[i] == 0) {
-						listFree = true;
-					}
-					
-					while(listFree == true) {		
-					s.acquire();
-						if(list[i]==0) {
-							list[i] = 1;
-
-							System.out.println("A fost produs elememntul" + i);
-							listFree = false;
-						}
-					s.release();
-				    Thread.sleep(1000);
+				randomElement = new Random().nextInt(10);
+				if(Main.list.size() == Main.listSize) {
+					System.out.println("Lista este plina");
 				}
+				else {
+					Main.s.acquire();
+					System.out.println("Se produce elementul..");
+					Main.list.add(randomElement);
+					
+					System.out.println("A fost produs elememntul" + randomElement);
+					Main.s.release();
+					
+				}
+				Thread.sleep(150);
 			}
 		}
-	}
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
