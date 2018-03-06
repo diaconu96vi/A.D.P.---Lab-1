@@ -11,18 +11,18 @@ public class Producator extends Thread {
 		try {
 			while(true) {
 				randomElement = new Random().nextInt(10);
+				Main.s.acquire();
 				if(Main.list.size() == Main.listSize) {
 					System.out.println("Lista este plina");
 				}
 				else {
-					Main.s.acquire();
+					
 					System.out.println("Se produce elementul..");
 					Main.list.add(randomElement);
 					
-					System.out.println("A fost produs elememntul" + randomElement);
-					Main.s.release();
-					
+					System.out.println("A fost produs elememntul" + randomElement);	
 				}
+				Main.s.release();
 				Thread.sleep(150);
 			}
 		}
